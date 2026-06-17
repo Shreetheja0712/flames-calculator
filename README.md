@@ -32,4 +32,4 @@ Since this is a frontend-only application, no server setup is required!
 
 1. Clone the repository:
    ```bash
-   git clone [https://github.com/](https://github.com/)[YourUsername]/flames-calculator.git
+   git clone https://github.com/Shreetheja0712/flames-calculator.git
