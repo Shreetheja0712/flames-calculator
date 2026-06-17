@@ -1,0 +1,677 @@
+/* ============================================================
+   FLAMES Calculator — styles.css
+   Pixel-matched to screenshot: soft pink theme, white card
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+
+/* === RESET === */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* === ROOT TOKENS === */
+:root {
+  --pink-bg:       #fce8ef;       /* very light pink page background */
+  --pink-mid:      #f8d0de;       /* slightly deeper for gradient bottom */
+  --pink-brand:    #e8688a;       /* header text, labels */
+  --pink-hot:      #e0527a;       /* button, accents */
+  --pink-pill:     #fce4ec;       /* FLAMES pill background */
+  --pink-pill-bd:  #f5b8cc;       /* FLAMES pill border */
+  --pink-letter:   #d63a6e;       /* pill letter circle bg */
+  --text-dark:     #3d1a2e;       /* hero "Find Your" heading */
+  --text-body:     #6b4c58;       /* body text, sub-labels */
+  --text-light:    #a07585;       /* placeholder, disclaimer */
+  --white:         #ffffff;
+  --card-shadow:   0 8px 40px rgba(220, 80, 130, 0.12);
+  --input-border:  #f0c0d0;
+  --input-focus:   #e8688a;
+  --radius-card:   24px;
+  --radius-input:  50px;          /* pill-shaped inputs */
+  --radius-btn:    50px;
+  --radius-pill:   50px;
+  --font:          'Nunito', sans-serif;
+}
+
+/* === BASE === */
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font);
+  background: linear-gradient(160deg, #fdeef4 0%, #fce8ef 50%, #f9d8e8 100%);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  color: var(--text-body);
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* ============================================================
+   FLOATING PARTICLES (sakura, flowers, stars)
+   ============================================================ */
+.particles {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.p {
+  position: absolute;
+  font-size: 1.1rem;
+  opacity: 0.55;
+  animation: drift linear infinite;
+  user-select: none;
+}
+
+/* Individual particle positions + sizes + timings */
+.p1  { left: 33%;  top: 4%;   font-size: 1.4rem; animation-duration: 0s; opacity: 0.5; }
+.p2  { left: 18%;  top: 11%;  font-size: 1.1rem; animation-duration: 0s; opacity: 0.45; }
+.p3  { left: 62%;  top: 6%;   font-size: 1rem;   animation-duration: 0s; opacity: 0.4; }
+.p4  { left: 82%;  top: 20%;  font-size: 0.9rem; animation-duration: 0s; opacity: 0.5; }
+.p5  { left: 92%;  top: 28%;  font-size: 0.8rem; animation-duration: 0s; opacity: 0.35; }
+.p6  { left: 4%;   top: 35%;  font-size: 0.75rem;animation-duration: 0s; opacity: 0.4; }
+.p7  { left: 26%;  top: 52%;  font-size: 1rem;   animation-duration: 0s; opacity: 0.35; }
+.p8  { left: 59%;  top: 32%;  font-size: 0.85rem;animation-duration: 0s; opacity: 0.45; }
+.p9  { left: 14%;  top: 68%;  font-size: 0.8rem; animation-duration: 0s; opacity: 0.3; }
+.p10 { left: 72%;  top: 62%;  font-size: 0.9rem; animation-duration: 0s; opacity: 0.4; }
+.p11 { left: 12%;  top: 76%;  font-size: 1.2rem; animation-duration: 0s; opacity: 0.45; }
+.p12 { left: 88%;  top: 58%;  font-size: 0.95rem;animation-duration: 0s; opacity: 0.38; }
+
+/* Gentle float animation */
+@keyframes drift {
+  0%   { transform: translateY(0px) rotate(0deg); }
+  33%  { transform: translateY(-12px) rotate(8deg); }
+  66%  { transform: translateY(6px) rotate(-5deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
+/* Override static: let them gently sway */
+.p  { animation: sway 6s ease-in-out infinite; }
+.p1  { animation-delay: 0s;    animation-duration: 7s; }
+.p2  { animation-delay: -1.5s; animation-duration: 8s; }
+.p3  { animation-delay: -3s;   animation-duration: 6s; }
+.p4  { animation-delay: -2s;   animation-duration: 9s; }
+.p5  { animation-delay: -4s;   animation-duration: 7.5s; }
+.p6  { animation-delay: -0.5s; animation-duration: 8.5s; }
+.p7  { animation-delay: -3.5s; animation-duration: 6.5s; }
+.p8  { animation-delay: -2.5s; animation-duration: 7s; }
+.p9  { animation-delay: -1s;   animation-duration: 9.5s; }
+.p10 { animation-delay: -4.5s; animation-duration: 8s; }
+.p11 { animation-delay: -1.8s; animation-duration: 7s; }
+.p12 { animation-delay: -3.2s; animation-duration: 6.8s; }
+
+@keyframes sway {
+  0%   { transform: translateY(0px) rotate(0deg) scale(1); }
+  25%  { transform: translateY(-8px) rotate(6deg) scale(1.05); }
+  50%  { transform: translateY(-3px) rotate(-4deg) scale(0.97); }
+  75%  { transform: translateY(-11px) rotate(8deg) scale(1.03); }
+  100% { transform: translateY(0px) rotate(0deg) scale(1); }
+}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+header {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.1rem 2rem;
+  background: transparent;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+}
+
+.logo-icon {
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+.logo-text {
+  font-family: var(--font);
+  font-size: 1.25rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  color: var(--pink-brand);
+}
+
+/* "How to Play" header button — text with circle-i icon */
+.btn-how {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: transparent;
+  border: none;
+  color: var(--pink-brand);
+  font-family: var(--font);
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+  transition: background 0.2s ease;
+  letter-spacing: 0.01em;
+}
+
+.btn-how:hover {
+  background: rgba(232, 104, 138, 0.1);
+}
+
+.btn-how-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--pink-brand);
+  border-radius: 50%;
+  font-size: 0.75rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+/* ============================================================
+   MAIN / HERO
+   ============================================================ */
+main {
+  position: relative;
+  z-index: 5;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem 1.5rem 3rem;
+  gap: 0;
+}
+
+/* Hero text */
+.hero {
+  text-align: center;
+  margin-bottom: 1.6rem;
+}
+
+.hero-title {
+  font-family: var(--font);
+  font-size: clamp(2.4rem, 5vw, 3.6rem);
+  font-weight: 900;
+  line-height: 1.15;
+  color: var(--text-dark);
+  margin-bottom: 0.75rem;
+}
+
+.hero-accent {
+  display: block;
+  color: var(--pink-hot);
+}
+
+.hero-sub {
+  font-size: 0.95rem;
+  color: var(--text-body);
+  font-weight: 600;
+  opacity: 0.85;
+}
+
+/* ============================================================
+   CARD
+   ============================================================ */
+.card {
+  background: var(--white);
+  border-radius: var(--radius-card);
+  box-shadow: var(--card-shadow);
+  padding: 2.2rem 2rem 2rem;
+  width: 100%;
+  max-width: 390px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* ── Field group ── */
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 0.4rem;
+}
+
+.field-label {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  letter-spacing: 0.01em;
+}
+
+.field-input {
+  width: 100%;
+  padding: 0.82rem 1.3rem;
+  background: #fff;
+  border: 1.5px solid var(--input-border);
+  border-radius: var(--radius-input);
+  font-family: var(--font);
+  font-size: 0.95rem;
+  color: var(--text-dark);
+  outline: none;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.field-input::placeholder {
+  color: #c8a0b0;
+  font-weight: 500;
+}
+
+.field-input:focus {
+  border-color: var(--input-focus);
+  box-shadow: 0 0 0 3px rgba(232, 104, 138, 0.15);
+}
+
+/* ── Heart divider ── */
+.heart-divider {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0.9rem 0 0.7rem;
+}
+
+.heart-btn {
+  width: 40px;
+  height: 40px;
+  background: var(--pink-hot);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 14px rgba(224, 82, 122, 0.4);
+  animation: heartbeat 1.8s ease-in-out infinite;
+  cursor: default;
+  user-select: none;
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  30%       { transform: scale(1.12); }
+  50%       { transform: scale(1);   }
+  70%       { transform: scale(1.08); }
+}
+
+/* ── Calculate button ── */
+.btn-calc {
+  margin-top: 1.3rem;
+  width: 100%;
+  padding: 1rem 1.5rem;
+  background: linear-gradient(135deg, #e8688a 0%, #d6447a 100%);
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius-btn);
+  font-family: var(--font);
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  box-shadow: 0 6px 22px rgba(214, 68, 122, 0.42);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.btn-calc:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(214, 68, 122, 0.52);
+  filter: brightness(1.05);
+}
+
+.btn-calc:active {
+  transform: translateY(0);
+  filter: brightness(0.97);
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer {
+  position: relative;
+  z-index: 5;
+  border-top: 1px solid rgba(232, 104, 138, 0.12);
+  padding: 1.6rem 1.5rem 1.8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  background: rgba(255,255,255,0.35);
+}
+
+.footer-disclaimer {
+  font-size: 0.82rem;
+  color: var(--text-light);
+  text-align: center;
+  max-width: 520px;
+  line-height: 1.55;
+}
+
+/* Star CTA button */
+.btn-star {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.6rem 1.5rem;
+  background: rgba(232, 104, 138, 0.1);
+  border: 1.5px solid rgba(232, 104, 138, 0.3);
+  border-radius: var(--radius-pill);
+  color: var(--pink-hot);
+  font-family: var(--font);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  letter-spacing: 0.01em;
+}
+
+.btn-star:hover {
+  background: rgba(232, 104, 138, 0.18);
+  border-color: var(--pink-hot);
+  transform: translateY(-1px);
+}
+
+/* Social icon row */
+.footer-socials {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.social-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: rgba(232, 104, 138, 0.1);
+  border: 1.5px solid rgba(232, 104, 138, 0.2);
+  border-radius: 50%;
+  color: var(--pink-hot);
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.social-icon:hover {
+  background: var(--pink-hot);
+  color: var(--white);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(214, 68, 122, 0.35);
+}
+
+.footer-credit {
+  font-size: 0.82rem;
+  color: var(--text-light);
+  font-weight: 600;
+}
+
+.footer-credit strong {
+  color: var(--pink-brand);
+}
+
+/* ============================================================
+   MODAL OVERLAY
+   ============================================================ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(40, 10, 25, 0.55);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 1.5rem;
+}
+
+.modal-overlay.active {
+  display: flex;
+}
+
+/* ── Modal box ── */
+.modal-box {
+  background: var(--white);
+  border-radius: 24px;
+  padding: 2.2rem 2.2rem 2rem;
+  width: 100%;
+  max-width: 580px;
+  position: relative;
+  transform: scale(0.92) translateY(16px);
+  opacity: 0;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease;
+  box-shadow: 0 20px 60px rgba(180, 60, 110, 0.18);
+}
+
+.modal-overlay.active .modal-box {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+}
+
+/* Close button — circle with ✕, top-right */
+.modal-close {
+  position: absolute;
+  top: 1.1rem;
+  right: 1.2rem;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: 1.5px solid rgba(180, 80, 120, 0.35);
+  border-radius: 50%;
+  color: var(--pink-brand);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  font-family: var(--font);
+}
+
+.modal-close:hover {
+  background: var(--pink-hot);
+  border-color: var(--pink-hot);
+  color: var(--white);
+}
+
+/* ============================================================
+   ABOUT / HOW TO PLAY MODAL CONTENT
+   ============================================================ */
+.modal-title {
+  font-family: var(--font);
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--pink-hot);
+  margin-bottom: 0.5rem;
+}
+
+.modal-intro {
+  font-size: 0.9rem;
+  color: var(--text-body);
+  margin-bottom: 1.3rem;
+  font-weight: 600;
+}
+
+/* Numbered steps */
+.steps-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.6rem;
+  counter-reset: steps;
+  padding-left: 0;
+}
+
+.steps-list li {
+  counter-increment: steps;
+  display: flex;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text-body);
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.steps-list li::before {
+  content: counter(steps) ".";
+  color: var(--text-body);
+  font-weight: 700;
+  min-width: 18px;
+}
+
+.steps-list li strong {
+  color: var(--text-dark);
+  font-weight: 900;
+  letter-spacing: 0.03em;
+}
+
+/* FLAMES grid — 2 columns */
+.flames-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.65rem;
+}
+
+/* Each pill */
+.flame-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.7rem 1rem;
+  background: var(--pink-pill);
+  border: 1px solid var(--pink-pill-bd);
+  border-radius: var(--radius-pill);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+/* Circle with the letter */
+.pill-letter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 32px;
+  background: var(--pink-letter);
+  color: var(--white);
+  border-radius: 50%;
+  font-size: 0.88rem;
+  font-weight: 900;
+  font-family: var(--font);
+}
+
+/* ============================================================
+   RESULT MODAL CONTENT
+   ============================================================ */
+.modal-result {
+  text-align: center;
+}
+
+.result-pretitle {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+
+.result-emoji {
+  font-size: 4rem;
+  margin: 0.6rem 0;
+  animation: pop-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;
+  display: block;
+}
+
+@keyframes pop-in {
+  from { transform: scale(0.2); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+.result-label {
+  font-family: var(--font);
+  font-size: 1.9rem;
+  font-weight: 900;
+  color: var(--pink-hot);
+  margin-bottom: 0.3rem;
+  animation: fade-up 0.35s ease 0.3s both;
+}
+
+.result-names {
+  font-size: 0.88rem;
+  color: var(--text-light);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  animation: fade-up 0.35s ease 0.4s both;
+}
+
+.result-desc {
+  font-size: 0.92rem;
+  color: var(--text-body);
+  line-height: 1.6;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+  animation: fade-up 0.35s ease 0.45s both;
+}
+
+.btn-again {
+  margin-top: 1.4rem;
+  padding: 0.7rem 2rem;
+  background: transparent;
+  border: 1.5px solid var(--input-border);
+  border-radius: var(--radius-pill);
+  font-family: var(--font);
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-body);
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.btn-again:hover {
+  background: var(--pink-pill);
+  border-color: var(--pink-hot);
+  color: var(--pink-hot);
+}
+
+/* ============================================================
+   ANIMATIONS UTILITIES
+   ============================================================ */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 480px) {
+  header { padding: 0.9rem 1.2rem; }
+  .hero-title { font-size: 2.2rem; }
+  .card { padding: 1.8rem 1.4rem; }
+  .flames-grid { grid-template-columns: 1fr; }
+  .modal-box { padding: 1.8rem 1.4rem; }
+}
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
