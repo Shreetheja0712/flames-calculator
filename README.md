@@ -1,3 +1,6 @@
+# Webpage Link
+[https://shreetheja0712.github.io/flames-calculator/](https://shreetheja0712.github.io/flames-calculator/)
+
 # 🔥 FLAMES Calculator
 
 A sleek, interactive web application that calculates the relationship outcome between two names using the classic FLAMES game algorithm. Transitioned from a terminal-based C program to a modern, fully responsive web interface.
